@@ -1,0 +1,67 @@
+// This is solution of The Maximum Subarray hacker rank .
+// here we have to solve two problems
+  1.find maximum sum subarray and
+  2.find maximum sum sub sequence
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the maxSubarray function below.
+    static int[] maxSubarray(int[] arr) {
+        int l=0; 
+        int ansArray = 0;
+        int ansSeq = 0;
+        int mx=arr[0];
+        // this is for maximum sub susequence
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]>mx)mx=arr[i];
+            if(arr[i]>=0)
+                ansSeq+=arr[i];
+        }
+        int res[] = new int[2];
+        // if maximum is negative then there will be only one element in subsequence as well as in subarray i.e max element of the array
+        if(mx<0){
+            res[0]=mx;res[1]=mx;
+            return res;
+        }
+        
+        // for maximum sum subarray it is simple implementation of kadane's algorithm
+        while(l<arr.length){
+            int sum=0;
+            for(int i=l;i<arr.length && sum>=0;i++){
+                sum+=arr[i];
+                if(sum>ansArray){
+                    ansArray=sum;
+                }
+            }
+            l++;
+        }
+        res[0]=ansArray;res[1]=ansSeq;
+        return res;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(b.readLine());
+        for (int tItr = 0; tItr < t; tItr++) {
+            int n = Integer.parseInt(b.readLine());
+            int[] arr = new int[n];
+            String[] arrItems = b.readLine().trim().split(" ");
+            for (int i = 0; i < n; i++) {
+                int arrItem = Integer.parseInt(arrItems[i]);
+                arr[i] = arrItem;
+            }
+            int[] result = maxSubarray(arr);
+            for (int i:result) {
+                System.out.print(i+" ");
+            }
+            System.out.println();
+        }
+    }
+}
